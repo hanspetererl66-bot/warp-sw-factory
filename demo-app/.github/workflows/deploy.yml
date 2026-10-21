@@ -1,0 +1,37 @@
+# Deploy pipeline. Gate 4 is the required-reviewer rule on the `production`
+# GitHub environment (Settings > Environments > production > Required reviewers).
+name: deploy
+on:
+  workflow_dispatch:
+    inputs:
+      sha:
+        description: Commit SHA to deploy
+        required: true
+jobs:
+  staging:
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.sha }}
+      - name: Deploy to staging
+        run: ./scripts/deploy.sh staging "${{ inputs.sha }}"
+        env:
+          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+      - name: Smoke test
+        run: make smoke URL="${{ vars.STAGING_URL }}"
+  production:
+    needs: staging
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.sha }}
+      - name: Deploy to production
+        run: ./scripts/deploy.sh production "${{ inputs.sha }}"
+        env:
+          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+      - name: Smoke test
+        run: make smoke URL="${{ vars.PRODUCTION_URL }}"

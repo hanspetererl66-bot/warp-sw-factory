@@ -1,0 +1,13 @@
+schemaVersion: v1alpha1
+name: lifecycle-demo
+description: >-
+  Software factory demo along the full lifecycle: requirements, plan, code,
+  adversarial review, human decision, deploy. One GitHub trigger, one demo
+  repository, human gates at spec approval, merge, and production promotion.
+alias: Lifecycle Demo
+repositories:
+  - owner: hanspetererl66-bot
+    name: lifecycle-demo-app
+agentDefaults:
+  model: auto
+  runner: linux-standard
