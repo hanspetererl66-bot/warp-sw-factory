@@ -36,6 +36,10 @@ The examples target schema version `v1alpha1`.
   execution on your own infrastructure. The quickstart topology with
   `workerHost` pointed at a managed self-hosted worker and a runner matched
   to the worker's platform.
+- [`examples/08-lifecycle-demo`](examples/08-lifecycle-demo): a demo factory
+  along the full lifecycle. Requirements, plan, code, adversarial review on a
+  second model family, human decision, and deploy, with four human gates.
+  The target app is in [`demo-app`](demo-app).
 
 ## Using an example
 
